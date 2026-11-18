@@ -1,0 +1,104 @@
+-- Pertanyaan 1 Apa ibu kota Samoa?
+SELECT capital FROM country
+WHERE country == "Samoa";
+
+
+-- Pertanyaan 2 Berapa jumlah benua yang ada di Database?
+SELECT count(*) FROM continents;
+
+
+-- Pertanyaan 3 Apa nama kolom yang bertanggung jawab untuk area?
+-- area
+
+
+-- Pertanyaan 5 Nilai kunci apa yang menghubungkan tabel negara dengan informasi tentangnya?
+-- country_id
+
+-- Pertanyaan 5 Temukan negara terkecil berdasarkan luas wilayah
+
+SELECT country, min(area) FROM info
+JOIN country ON info.country_id == country.country_id;
+
+
+-- Pertanyaan 6 Negara mana yang memiliki kepadatan penduduk tertinggi?
+
+SELECT country, max(density) FROM info
+JOIN country ON info.country_id == country.country_id;
+
+
+-- Pertanyaan 7 Di benua mana negara dengan ibu kota Basseterre berada?
+
+SELECT continents.continent FROM info
+JOIN country ON info.country_id == country.country_id
+JOIN continents ON continents.continent_id == country.continent_id
+WHERE country.capital == "Basseterre";
+
+
+--Pertanyaan 8 Berapa banyak negara yang ada di Afrika?
+
+SELECT count(*) FROM country
+JOIN continents ON continents.continent_id == country.continent_id
+WHERE continents.continent == "Afrika";
+
+
+-- Pertanyaan 9 Apa ibu kota negara dengan populasi 1500001?
+
+SELECT capital FROM info
+JOIN country ON info.country_id == country.country_id
+WHERE info.population == 1500001;
+
+
+-- Pertanyaan 10 Negara mana yang paling padat penduduknya di antara negara-negara dengan populasi lebih dari 10 juta dan luas kurang dari 8 juta kilometer persegi?
+
+SELECT country FROM info
+JOIN country ON info.country_id == country.country_id
+WHERE info.population > 10000000 and info.area < 8000000
+ORDER BY density DESC;
+
+
+-- Pertanyaan 11 Berapa banyak negara yang memiliki ibu kota yang dimulai dengan huruf B?
+
+SELECT * from country
+WHERE country.capital LIKE "B%";
+
+
+-- Pertanyaan 12 Benua mana yang memiliki rata-rata kepadatan penduduk terendah?
+
+SELECT continent, avg(density) FROM info
+JOIN country ON info.country_id == country.country_id
+JOIN continents ON continents.continent_id == country.continent_id
+GROUP BY country.continent_id
+ORDER BY avg(density);
+
+
+-- Pertanyaan 13 Berapa total luas semua negara di Australia dan Oseania?
+
+SELECT sum(area) FROM info
+JOIN country ON info.country_id == country.country_id
+WHERE country.continent_id == 4;
+
+
+-- Pertanyaan 14 Dalam tabel info, ada beberapa negara yang persentase populasinya terhadap populasi Bumi adalah nol. Tentukan negara mana di antara negara-negara tersebut yang memiliki nama ibu kota terpanjang, dan masukkan populasi negara tersebut sebagai jawaban.
+
+SELECT population, capital FROM info
+JOIN country ON info.country_id == country.country_id
+WHERE info.percentage == 0;
+
+
+-- Pertanyaan 15 Negara mana yang namanya berakhir dengan 'ia', terletak di Oseania, dan memiliki populasi terkecil?
+
+SELECT country FROM info
+JOIN country ON info.country_id == country.country_id
+WHERE country.continent_id == 4 and country LIKE "%ia"
+ORDER BY population
+LIMIT 1;
+
+
+-- Pertanyaan 16 Tentukan rata-rata populasi dari 10 negara pertama di Eropa, yang diurutkan berdasarkan kepadatan penduduk (secara ascending). Masukkan bilangan bulat sebagai jawaban.
+
+SELECT avg(population) FROM info
+JOIN country ON info.country_id == country.country_id
+JOIN continents ON continents.continent_id == country.continent_id
+WHERE continent == "Eropa"
+ORDER BY density
+LIMIT 10;
